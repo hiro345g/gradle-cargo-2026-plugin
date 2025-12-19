@@ -7,7 +7,7 @@ class LocallyInstalledContainerIntegrationSpec extends AbstractIntegrationSpec{
     HelloWorldServletWarFixture servletWarFixture
 
     def setup() {
-        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
+        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir, ":$WAR_CONTEXT")
     }
 
     void cleanup() {

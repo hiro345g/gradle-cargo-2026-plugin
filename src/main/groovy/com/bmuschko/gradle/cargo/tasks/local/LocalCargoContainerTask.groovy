@@ -48,21 +48,18 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
      * The container's installation home directory.
      */
     @Internal
-    @Optional
     File homeDir
 
     /**
      * The Cargo configuration home directory.
      */
     @Internal
-    @Optional
     File configHomeDir
 
     /**
      * The Cargo configuration type.
      */
     @Internal
-    @Optional
     String configType
 
     /**

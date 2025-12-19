@@ -7,7 +7,7 @@ class DefaultDeployableSpec extends AbstractIntegrationSpec {
     HelloWorldServletWarFixture servletWarFixture
 
     void setup() {
-        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir.root, ":")
+        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir, ":")
         configureCargoInstaller()
     }
 

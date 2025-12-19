@@ -7,7 +7,7 @@ class DeployableIntegrationSpec extends AbstractIntegrationSpec {
     HelloWorldServletWarFixture servletWarFixture
 
     void setup() {
-        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
+        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir, ":$WAR_CONTEXT")
         configureCargoInstaller()
         buildScript << """
             import com.bmuschko.gradle.cargo.tasks.local.LocalCargoContainerTask

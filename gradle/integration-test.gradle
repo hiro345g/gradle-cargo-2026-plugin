@@ -1,10 +1,13 @@
 sourceSets {
     integrationTest {
-        groovy.srcDir file('src/integTest/groovy')
-        resources.srcDir file('src/integTest/resources')
-        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
-        runtimeClasspath += output + compileClasspath
+        groovy.srcDir file('src/integrationTest/groovy')
+        resources.srcDir file('src/integrationTest/resources')
     }
+}
+
+configurations {
+    integrationTestImplementation.extendsFrom configurations.testImplementation
+    integrationTestRuntimeOnly.extendsFrom configurations.testRuntimeOnly
 }
 
 task integrationTest(type: Test) {
@@ -13,6 +16,7 @@ task integrationTest(type: Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     mustRunAfter test
+    useJUnitPlatform()
 }
 
 check.dependsOn integrationTest

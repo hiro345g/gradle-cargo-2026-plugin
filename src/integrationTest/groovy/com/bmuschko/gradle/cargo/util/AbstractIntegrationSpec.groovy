@@ -3,21 +3,21 @@ package com.bmuschko.gradle.cargo.util
 import groovyx.net.http.HttpBuilder
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
+import spock.lang.TempDir
 
 abstract class AbstractIntegrationSpec extends Specification {
 
     protected final static String WAR_CONTEXT = 'test-servlet'
 
-    @Rule
-    TemporaryFolder testProjectDir
+    @TempDir
+    File testProjectDir
 
     File buildScript
 
     void setup() {
-        buildScript = testProjectDir.newFile('build.gradle') << """
+        buildScript = new File(testProjectDir, 'build.gradle')
+        buildScript << """
             plugins {
                 id 'com.bmuschko.cargo'
             }
@@ -50,7 +50,7 @@ abstract class AbstractIntegrationSpec extends Specification {
 
     BuildResult runBuild(String... arguments) {
         GradleRunner.create()
-            .withProjectDir(testProjectDir.root)
+            .withProjectDir(testProjectDir)
             .withArguments("-s", *arguments)
             .withPluginClasspath()
             .forwardOutput()

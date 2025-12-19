@@ -7,7 +7,7 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
     HelloWorldServletWarFixture servletWarFixture
 
     void setup() {
-        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
+        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir, ":$WAR_CONTEXT")
         buildScript << """
             import com.bmuschko.gradle.cargo.tasks.local.LocalCargoContainerTask
 

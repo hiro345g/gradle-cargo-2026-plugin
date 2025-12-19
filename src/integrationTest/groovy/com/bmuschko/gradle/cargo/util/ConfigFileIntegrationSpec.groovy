@@ -10,8 +10,8 @@ class ConfigFileIntegrationSpec extends AbstractIntegrationSpec {
     private final String TEXT_RESOURCE_VALUE = "test resource value"
 
     void setup() {
-        def textResourceFactoryJarFixture = new TextResourceFactoryJarFixture(testProjectDir.root, ":textResourceFactory")
-        def textResourceLoaderServletWarFixture = new TextResourceLoaderServletWarFixture(testProjectDir.root, ":textResourceLoader")
+        def textResourceFactoryJarFixture = new TextResourceFactoryJarFixture(testProjectDir, ":textResourceFactory")
+        def textResourceLoaderServletWarFixture = new TextResourceLoaderServletWarFixture(testProjectDir, ":textResourceLoader")
 
         configureCargoInstaller()
 
