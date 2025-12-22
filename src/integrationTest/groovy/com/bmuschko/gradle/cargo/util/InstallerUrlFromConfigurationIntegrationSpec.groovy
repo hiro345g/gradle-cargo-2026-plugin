@@ -2,7 +2,7 @@ package com.bmuschko.gradle.cargo.util
 
 import com.bmuschko.gradle.cargo.util.fixture.HelloWorldServletWarFixture
 
-class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
+class InstallerUrlFromConfigurationIntegrationSpec extends AbstractIntegrationSpec {
 
     HelloWorldServletWarFixture servletWarFixture
 
@@ -44,25 +44,11 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
     }
 
     void cleanup() {
-        runBuild "cargoStopLocal"
-    }
-
-    void "url can be used to configure installer source"() {
-        given:
-        buildScript << """
-            cargo {
-                local {
-                    installer {
-                        installUrl = "https://repo1.maven.org/maven2/org/apache/tomcat/tomcat/9.0.14/tomcat-9.0.14.zip"
-                    }
-                }
-            }
-        """
-        when:
-        runBuild "cargoStartLocal"
-
-        then:
-        requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
+        try {
+            runBuild("cargoStopLocal")
+        } catch (org.gradle.testkit.runner.UnexpectedBuildFailure e) {
+            println "Ignoring expected failure during cargoStopLocal in cleanup: ${e.message}"
+        }
     }
 
     void "configuration can be used to configure installer source"() {

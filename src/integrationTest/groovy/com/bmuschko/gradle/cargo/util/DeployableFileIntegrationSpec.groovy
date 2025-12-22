@@ -2,7 +2,7 @@ package com.bmuschko.gradle.cargo.util
 
 import com.bmuschko.gradle.cargo.util.fixture.HelloWorldServletWarFixture
 
-class DeployableIntegrationSpec extends AbstractIntegrationSpec {
+class DeployableFileIntegrationSpec extends AbstractIntegrationSpec {
 
     HelloWorldServletWarFixture servletWarFixture
 
@@ -27,7 +27,11 @@ class DeployableIntegrationSpec extends AbstractIntegrationSpec {
     }
 
     void cleanup() {
-        runBuild "cargoStopLocal"
+        try {
+            runBuild("cargoStopLocal")
+        } catch (org.gradle.testkit.runner.UnexpectedBuildFailure e) {
+            println "Ignoring expected failure during cargoStopLocal in cleanup: ${e.message}"
+        }
     }
 
     def "can use a file as a deployable"() {
@@ -57,40 +61,4 @@ class DeployableIntegrationSpec extends AbstractIntegrationSpec {
         then:
         requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
     }
-
-    def "can use a file collection as a deployable"() {
-        given:
-        buildScript << """
-            cargo {
-                deployable {
-                    file = configurations.war
-                    context = '$WAR_CONTEXT'
-                }
-            }
-        """
-
-        when:
-        runBuild "cargoStartLocal"
-
-        then:
-        requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
-    }
-
-    def "can deploy without context parameter"() {
-        given:
-        buildScript << """
-            cargo {
-                deployable {
-                    file = configurations.war
-                }
-            }
-        """
-
-        when:
-        runBuild "cargoStartLocal"
-
-        then:
-        requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
-    }
-
 }

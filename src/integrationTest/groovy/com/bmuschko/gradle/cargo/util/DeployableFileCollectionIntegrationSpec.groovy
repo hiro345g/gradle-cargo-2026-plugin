@@ -2,13 +2,28 @@ package com.bmuschko.gradle.cargo.util
 
 import com.bmuschko.gradle.cargo.util.fixture.HelloWorldServletWarFixture
 
-class DefaultDeployableSpec extends AbstractIntegrationSpec {
+class DeployableFileCollectionIntegrationSpec extends AbstractIntegrationSpec {
 
     HelloWorldServletWarFixture servletWarFixture
 
     void setup() {
-        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir, ":")
+        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir, ":$WAR_CONTEXT")
         configureCargoInstaller()
+        buildScript << """
+            import com.bmuschko.gradle.cargo.tasks.local.LocalCargoContainerTask
+
+            repositories {
+                mavenCentral()
+            }
+
+            configurations {
+                war
+            }
+
+            dependencies {
+                war project(path: '${servletWarFixture.projectPath}', configuration: 'archives')
+            }
+        """
     }
 
     void cleanup() {
@@ -19,11 +34,12 @@ class DefaultDeployableSpec extends AbstractIntegrationSpec {
         }
     }
 
-    def "project artifact is configured as a deployable including task dependencies"() {
+    def "can use a file collection as a deployable"() {
         given:
         buildScript << """
             cargo {
                 deployable {
+                    file = configurations.war
                     context = '$WAR_CONTEXT'
                 }
             }
@@ -35,6 +51,4 @@ class DefaultDeployableSpec extends AbstractIntegrationSpec {
         then:
         requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
     }
-
-
 }

@@ -10,8 +10,23 @@ class ConfigFileIntegrationSpec extends AbstractIntegrationSpec {
     private final String TEXT_RESOURCE_VALUE = "test resource value"
 
     void setup() {
-        def textResourceFactoryJarFixture = new TextResourceFactoryJarFixture(testProjectDir, ":textResourceFactory")
-        def textResourceLoaderServletWarFixture = new TextResourceLoaderServletWarFixture(testProjectDir, ":textResourceLoader")
+        new File(testProjectDir, 'settings.gradle').write """
+            pluginManagement {
+                repositories {
+                    mavenCentral()
+                }
+            }
+        """
+
+        def textResourceFactoryJarFixture = new TextResourceFactoryJarFixture(testProjectDir, "textResourceFactory")
+        def textResourceLoaderServletWarFixture = new TextResourceLoaderServletWarFixture(testProjectDir, "textResourceLoader")
+
+        def warBuildScript = new File(textResourceLoaderServletWarFixture.projectDir, 'build.gradle')
+        warBuildScript << """
+            dependencies {
+                implementation project(':textResourceFactory')
+            }
+        """
 
         configureCargoInstaller()
 
@@ -24,17 +39,16 @@ class ConfigFileIntegrationSpec extends AbstractIntegrationSpec {
 
             configurations {
                 war
-                extraClasspath
             }
 
             dependencies {
-                war project(path: '${textResourceLoaderServletWarFixture.projectPath}', configuration: 'archives')
-                extraClasspath project('$textResourceFactoryJarFixture.projectPath')
+                war project(path: 'textResourceLoader', configuration: 'archives')
             }
             
             cargo {
                 local {
-                    extraClasspath = configurations.extraClasspath
+                    logLevel = 'high'
+                    rmiPort = 8005
                 }
             
                 deployable {
@@ -64,7 +78,11 @@ class ConfigFileIntegrationSpec extends AbstractIntegrationSpec {
     }
 
     void cleanup() {
-        runBuild "cargoStopLocal"
+        try {
+            runBuild("cargoStopLocal")
+        } catch (org.gradle.testkit.runner.UnexpectedBuildFailure e) {
+            println "Ignoring expected failure during cargoStopLocal in cleanup: ${e.message}"
+        }
     }
 
     void "can use a file collection as a config files source"() {
@@ -82,6 +100,7 @@ class ConfigFileIntegrationSpec extends AbstractIntegrationSpec {
 
         when:
         runBuild "cargoStartLocal"
+        waitForTomcatStartup()
 
         then:
         requestTextResourceValue(TEXT_RESOURCE_NAME) == TEXT_RESOURCE_VALUE

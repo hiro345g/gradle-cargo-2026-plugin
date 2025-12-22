@@ -58,12 +58,14 @@ gradlePlugin {
             implementationClass = 'com.bmuschko.gradle.cargo.CargoBasePlugin'
             displayName = 'Gradle Cargo Base Plugin'
             description = 'Plugin that provides Cargo custom task types, pre-configures classpath and deployables.'
+            tags.set(['deployment', 'container', 'base', 'cargo'])
         }
         cargoPlugin {
             id = 'com.bmuschko.cargo'
             implementationClass = 'com.bmuschko.gradle.cargo.CargoPlugin'
             displayName = 'Gradle Cargo Plugin'
             description = 'Plugin that provides a set of local and remote Cargo tasks and exposes extension for configuration.'
+            tags.set(['deployment', 'container', 'web', 'ear', 'cargo'])
         }
     }
 }
@@ -71,7 +73,6 @@ gradlePlugin {
 pluginBundle {
     website = "https://github.com/bmuschko/gradle-cargo-plugin"
     vcsUrl = "https://github.com/bmuschko/gradle-cargo-plugin"
-    tags = ['deployment', 'container', 'web', 'ear', 'cargo']
 }
 
 gitPublish {

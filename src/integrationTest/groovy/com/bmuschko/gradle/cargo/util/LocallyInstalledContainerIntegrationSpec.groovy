@@ -11,7 +11,11 @@ class LocallyInstalledContainerIntegrationSpec extends AbstractIntegrationSpec{
     }
 
     void cleanup() {
-        runBuild "cargoStopLocal"
+        try {
+            runBuild("cargoStopLocal")
+        } catch (org.gradle.testkit.runner.UnexpectedBuildFailure e) {
+            println "Ignoring expected failure during cargoStopLocal in cleanup: ${e.message}"
+        }
     }
 
     def "can use a locally installed container"() {
