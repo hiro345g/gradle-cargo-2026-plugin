@@ -1,6 +1,7 @@
 package com.bmuschko.gradle.cargo.util
 
-import groovyx.net.http.HttpBuilder
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.UnexpectedBuildFailure
@@ -100,8 +101,9 @@ abstract class AbstractIntegrationSpec extends Specification {
     }
 
     String requestServletResponseText() {
-        HttpBuilder.configure {
-            request.uri = "http://localhost:8080/$WAR_CONTEXT"
-        }.get()
+        def client = new OkHttpClient()
+        def request = new Request.Builder().url("http://localhost:8080/$WAR_CONTEXT").build()
+        def response = client.newCall(request).execute()
+        return response.body().string()
     }
 }

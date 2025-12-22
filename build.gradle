@@ -8,9 +8,10 @@ plugins {
 
 apply from: "$rootProject.projectDir/gradle/integration-test.gradle"
 
-def compatibilityVersion = JavaVersion.VERSION_1_8
-sourceCompatibility = compatibilityVersion
-targetCompatibility = compatibilityVersion
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 group = 'com.bmuschko'
 version = '2.9.0'
 
@@ -21,11 +22,11 @@ repositories {
 dependencies {
     def cargoVersion = '1.9.10'
     implementation "org.codehaus.cargo:cargo-daemon-client:$cargoVersion"
-    testImplementation('org.spockframework:spock-core:2.1-groovy-3.0') {
-        exclude group: 'org.codehaus.groovy'
-    }
+    testImplementation('org.spockframework:spock-core:2.4-groovy-4.0')
     testImplementation "org.codehaus.cargo:cargo-ant:$cargoVersion"
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.8.2'
 }
 
 task sourcesJar(type: Jar) {
@@ -52,6 +53,9 @@ artifacts {
 }
 
 gradlePlugin {
+    website = "https://github.com/bmuschko/gradle-cargo-plugin"
+    vcsUrl = "https://github.com/bmuschko/gradle-cargo-plugin"
+
     plugins {
         cargoBasePlugin {
             id = 'com.bmuschko.cargo-base'
@@ -68,11 +72,6 @@ gradlePlugin {
             tags.set(['deployment', 'container', 'web', 'ear', 'cargo'])
         }
     }
-}
-
-pluginBundle {
-    website = "https://github.com/bmuschko/gradle-cargo-plugin"
-    vcsUrl = "https://github.com/bmuschko/gradle-cargo-plugin"
 }
 
 gitPublish {

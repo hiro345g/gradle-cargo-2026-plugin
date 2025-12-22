@@ -22,5 +22,5 @@ task integrationTest(type: Test) {
 check.dependsOn integrationTest
 
 dependencies {
-    integrationTestImplementation "io.github.http-builder-ng:http-builder-ng-core:1.0.3"
+    integrationTestImplementation "com.squareup.okhttp3:okhttp:4.12.0"
 }

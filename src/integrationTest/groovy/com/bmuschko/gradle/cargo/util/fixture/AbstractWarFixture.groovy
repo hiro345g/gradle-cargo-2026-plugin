@@ -48,6 +48,12 @@ abstract class AbstractWarFixture extends ProjectFixture {
             war {
                 webXml = file("$WEB_XML_FILENAME")
             }
+            
+            configurations.archives.artifacts.clear()
+            
+            artifacts {
+                archives war
+            }
         """
     }
 
