@@ -4,11 +4,11 @@ The following versions (`2.12.0`, `2.11.0`, `2.10.0`) are not official releases 
 
 ### Version 2.12.0 (for `gradle9` branch)
 
-* This version number is designated for the `gradle9` branch, which focuses on compatibility and updates for Gradle 9.x. This branch includes updates for the Java 11 minimum requirement and Jakarta EE 9 dependencies.
+* This version number is designated for the `gradle9` branch, which focuses on compatibility and updates for Gradle 9.x. This branch includes updates for the Java 17 minimum requirement and Jakarta EE 9 dependencies.
 
 ### Version 2.11.0 (for `gradle8` branch)
 
-* This version number is designated for the `gradle8` branch, which focuses on compatibility and updates for Gradle 8.x.
+* This version number is designated for the `gradle8` branch, which focuses on compatibility and updates for Gradle 8.x.This branch includes updates for the Java 11 minimum requirement.
 
 ### Version 2.10.0 (for `gradle7` branch)
 
