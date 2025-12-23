@@ -1,21 +1,37 @@
-# Gradle Cargo plugin [![Build Status](https://github.com/bmuschko/gradle-cargo-plugin/workflows/Build%20and%20Release%20%5BLinux%5D/badge.svg)](https://github.com/bmuschko/gradle-cargo-plugin/actions?query=workflow%3A%22Build+and+Release+%5BLinux%5D%22)
+# Gradle Cargo plugin
+
+<table border=1>
+    <tr>
+        <td>
+            <b>Note on Authorship and Maintenance</b><br>
+            This repository is a personal update by <a href="https://github.com/hiro345g">hiro345g</a>, not the original author of the Gradle Cargo Plugin. It reflects personal efforts to update and maintain the plugin for newer Gradle versions and dependencies.
+        </td>
+    </tr>
+</table>
 
 ![Cargo Logo](https://codehaus-cargo.github.io/cargo/attachments/cargo-banner-left.png)
 
 <table border=1>
     <tr>
         <td>
-            Over the past couple of years this plugin has seen many releases. Thanks to everyone involved! 
-            Unfortunately, I don't have much time to contribute anymore. In practice this means far less activity, 
-            responsiveness on issues and new releases from my end.
-        </td>
-    </tr>
-    <tr>
-        <td>
             I am 
             <a href="https://discuss.gradle.org/t/looking-for-new-owners-for-gradle-plugins/9735">actively looking for contributors</a> 
             willing to take on maintenance and implementation of the project. If you are interested and would love to see this 
             plugin continue to thrive, shoot me a <a href="mailto:benjamin.muschko@gmail.com">mail</a>.
+        </td>
+    </tr>
+</table>
+
+<table border=1>
+    <tr>
+        <td>
+            <b>Gradle 9 Compatibility</b><br>
+            This plugin has been updated to be compatible with Gradle 9. Key changes include:
+            <ul>
+                <li>Minimum required Java version is now 11.</li>
+                <li>Dependencies have been updated to support Jakarta EE 9 (e.g., `jakarta.servlet-api` instead of `javax.servlet-api`).</li>
+                <li>The plugin now correctly works with modern Gradle versions, resolving issues with task configuration and container lifecycle in tests.</li>
+            </ul>
         </td>
     </tr>
 </table>
@@ -257,7 +273,7 @@ If you wish to benefit from Gradle dependency cache when resolving container dis
     }
     
     dependencies {
-        tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
+        tomcat "org.apache.tomcat:tomcat:10.1.49@zip"
     }
     
     cargo {
