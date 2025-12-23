@@ -273,7 +273,7 @@ If you wish to benefit from Gradle dependency cache when resolving container dis
     }
     
     dependencies {
-        tomcat "org.apache.tomcat:tomcat:10.1.49@zip"
+        tomcat "org.apache.tomcat:tomcat:10.1.50@zip"
     }
     
     cargo {
@@ -287,7 +287,7 @@ If you wish to benefit from Gradle dependency cache when resolving container dis
 ### Example
 
     cargo {
-        containerId = 'tomcat6x'
+        containerId = 'tomcat10x'
         port = 9090
 
         deployable {
@@ -301,7 +301,7 @@ If you wish to benefit from Gradle dependency cache when resolving container dis
         }
 
         local {
-            homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
+            homeDir = file('/home/user/dev/tools/apache-tomcat-10.1.50')
             outputFile = file('build/output.log')
             startStopTimeout = 60000
 
@@ -338,7 +338,7 @@ code snippet:
             apply plugin: 'com.bmuschko.cargo'
 
             cargo {
-                containerId = 'tomcat7x'
+                containerId = 'tomcat11x'
 
                 remote {
                     hostname = 'localhost'
@@ -355,7 +355,7 @@ You would specify each artifact in a separate `deployable` closure. Each of the 
 The following example demonstrates how a Cargo setup with three different artifacts deployed to a local Tomcat:
 
     cargo {
-        containerId = 'tomcat6x'
+        containerId = 'tomcat10x'
         port = 9090
 
         deployable {
@@ -374,7 +374,7 @@ The following example demonstrates how a Cargo setup with three different artifa
         }
 
         local {
-            homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
+            homeDir = file('/home/user/dev/tools/apache-tomcat-10.1.49')
         }
     }
 
@@ -384,11 +384,11 @@ Cargo allows for defining a container that gets automatically downloaded and ins
 do is to specify the `installer` closure. The following code snippet downloads, installs and uses Tomcat 7:
 
     cargo {
-        containerId = 'tomcat7x'
+        containerId = 'tomcat11x'
 
         local {
             installer {
-                installUrl = 'http://apache.osuosl.org/tomcat/tomcat-7/v7.0.27/bin/apache-tomcat-7.0.27.zip'
+                installUrl = 'https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.15/bin/apache-tomcat-11.0.15.zip'
                 downloadDir = file("$buildDir/download")
                 extractDir = file("$buildDir/extract")
             }
@@ -438,13 +438,13 @@ for Tomcat and Jetty:
     apply plugin: 'com.bmuschko.cargo-base'
 
     task myTomcatRun(type: com.bmuschko.gradle.cargo.tasks.local.CargoRunLocal) {
-        containerId = 'tomcat7x'
-        homeDir = file('/home/user/dev/tools/apache-tomcat-7.0.42')
+        containerId = 'tomcat10x'
+        homeDir = file('/home/user/dev/tools/apache-tomcat-10.1.42')
     }
 
     task myJettyRun(type: com.bmuschko.gradle.cargo.tasks.local.CargoRunLocal) {
-        containerId = 'jetty9x'
-        homeDir = file('/home/user/dev/tools/jetty-distribution-9.0.4.v20130625')
+        containerId = 'jetty12x'
+        homeDir = file('/home/user/dev/tools/jetty-home-12.1.5')
     }
 
 **I'd like to create deployment tasks for a rolling deployment to multiple remote containers. How do I do this?**
@@ -473,7 +473,7 @@ also add another task that triggers the deployment to all remote containers.
     remoteContainers.each { config ->
         task "deployRemote${config.name.capitalize()}"(type: com.bmuschko.gradle.cargo.tasks.remote.CargoDeployRemote) {
             description = "Deploys WAR to remote Tomcat '${config.name}'."
-            containerId = 'tomcat7x'
+            containerId = 'tomcat10x'
             hostname = config.hostname
             port = config.port
             username = config.username
@@ -500,14 +500,14 @@ an artifact.
         ...
     }
 
-    ext.tomcat7HandleId = 'tomcat7'
+    ext.tomcat10HandleId = 'tomcat10'
 
     task cargoDaemonStop(type: com.bmuschko.gradle.cargo.tasks.daemon.CargoDaemonStop) {
-        handleId = tomcat7HandleId
+        handleId = tomcat10HandleId
     }
 
     task cargoDaemonStart(type: com.bmuschko.gradle.cargo.tasks.daemon.CargoDaemonStart) {
-        handleId = tomcat7HandleId
+        handleId = tomcat10HandleId
     }
 
     cargoDaemonStart.mustRunAfter cargoDaemonStop
