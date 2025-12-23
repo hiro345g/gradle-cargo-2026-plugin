@@ -12,7 +12,7 @@ def compatibilityVersion = JavaVersion.VERSION_1_8
 sourceCompatibility = compatibilityVersion
 targetCompatibility = compatibilityVersion
 group = 'com.bmuschko'
-version = '2.9.0'
+version = '2.10.0'
 
 repositories {
     mavenCentral()
