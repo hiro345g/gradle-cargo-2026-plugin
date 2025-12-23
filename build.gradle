@@ -15,14 +15,14 @@ java {
     withJavadocJar()
 }
 group = 'com.bmuschko'
-version = '2.9.0'
+version = '2.12.0'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    def cargoVersion = '1.9.10'
+    def cargoVersion = '1.10.0'
     implementation "org.codehaus.cargo:cargo-daemon-client:$cargoVersion"
     testImplementation('org.spockframework:spock-core:2.4-groovy-4.0')
     testImplementation "org.codehaus.cargo:cargo-ant:$cargoVersion"
