@@ -24,6 +24,7 @@ abstract class AbstractIntegrationSpec extends Specification {
                 id 'com.bmuschko.cargo'
             }
         """
+        new File(testProjectDir, 'server.xml').text = new File('src/integrationTest/resources/server.xml').text
     }
 
     void configureCargoInstaller() {
@@ -45,6 +46,10 @@ abstract class AbstractIntegrationSpec extends Specification {
                         installConfiguration = configurations.tomcat
                         downloadDir = file("\$buildDir/download")
                         extractDir = file("\$buildDir/extract")
+                    }
+                    configFile {
+                        files = project.files('server.xml')
+                        toDir = 'conf'
                     }
                 }
             }
@@ -103,7 +108,8 @@ abstract class AbstractIntegrationSpec extends Specification {
     String requestServletResponseText() {
         def client = new OkHttpClient()
         def request = new Request.Builder().url("http://localhost:8080/$WAR_CONTEXT").build()
-        def response = client.newCall(request).execute()
-        return response.body().string()
+        client.newCall(request).execute().withCloseable { response ->
+            return response.body().string()
+        }
     }
 }

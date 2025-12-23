@@ -267,7 +267,8 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
         return config
     }
 
-    private Map<String, String> getCargoAttributes() {
+    @Internal
+    protected Map<String, String> getCargoAttributes() {
         def cargoAttributes = ['containerId': getContainerId(), 'action': getAction()]
         if (getStartStopTimeout() >= 0) {
             cargoAttributes['timeout'] = getStartStopTimeout()
