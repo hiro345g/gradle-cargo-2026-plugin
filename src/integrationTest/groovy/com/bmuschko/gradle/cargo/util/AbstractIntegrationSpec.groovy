@@ -24,7 +24,24 @@ abstract class AbstractIntegrationSpec extends Specification {
                 id 'com.bmuschko.cargo'
             }
         """
-        new File(testProjectDir, 'server.xml').text = new File('src/integrationTest/resources/server.xml').text
+        def serverXml = new File(testProjectDir, 'server.xml')
+        serverXml.text = """<?xml version='1.0' encoding='utf-8'?>
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
+  <Service name="Catalina">
+    <Connector port="${System.properties.getProperty('cargo.servlet.port', '8080')}" protocol="HTTP/1.1" connectionTimeout="20000" />
+    <Engine name="Catalina" defaultHost="localhost">
+      <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true">
+      </Host>
+    </Engine>
+  </Service>
+</Server>
+"""
     }
 
     void configureCargoInstaller() {
