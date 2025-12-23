@@ -33,11 +33,11 @@ abstract class AbstractIntegrationSpec extends Specification {
             }
 
             dependencies {
-                tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
+                tomcat "org.apache.tomcat:tomcat:10.1.50@zip"
             }
 
             cargo {
-                containerId = "tomcat9x"
+                containerId = "tomcat10x"
                 startStopTimeout = 10000
                 
                 local {

@@ -42,7 +42,7 @@ abstract class AbstractWarFixture extends ProjectFixture {
             }
 
             dependencies {
-                providedCompile "javax.servlet:javax.servlet-api:4.0.1"
+                providedCompile 'jakarta.servlet:jakarta.servlet-api:6.0.0'
             }
 
             war {

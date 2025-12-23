@@ -24,7 +24,7 @@ class InstallerUrlFromConfigurationIntegrationSpec extends AbstractIntegrationSp
             }
 
             cargo {
-                containerId = "tomcat9x"
+                containerId = "tomcat10x"
                 
                 local {
                     installer {
@@ -59,7 +59,7 @@ class InstallerUrlFromConfigurationIntegrationSpec extends AbstractIntegrationSp
             }
             
             dependencies {
-                tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
+                tomcat "org.apache.tomcat:tomcat:10.1.50@zip"
             }
             
             cargo {

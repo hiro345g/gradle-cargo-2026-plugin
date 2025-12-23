@@ -24,7 +24,7 @@ class InstallerUrlFromUrlIntegrationSpec extends AbstractIntegrationSpec {
             }
 
             cargo {
-                containerId = "tomcat9x"
+                containerId = "tomcat10x"
                 
                 local {
                     installer {
@@ -57,7 +57,7 @@ class InstallerUrlFromUrlIntegrationSpec extends AbstractIntegrationSpec {
             cargo {
                 local {
                     installer {
-                        installUrl = "https://repo1.maven.org/maven2/org/apache/tomcat/tomcat/9.0.14/tomcat-9.0.14.zip"
+                        installUrl = "https://repo1.maven.org/maven2/org/apache/tomcat/tomcat/10.1.50/tomcat-10.1.50.zip"
                     }
                 }
             }

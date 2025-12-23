@@ -37,21 +37,15 @@ class DeployableFileIntegrationSpec extends AbstractIntegrationSpec {
     def "can use a file as a deployable"() {
         given:
         buildScript << """
-            task configureCargoDeployable {
-                inputs.files(configurations.war)
-                
-                doLast {
-                    cargo {
-                        deployable {
-                            file = configurations.war.singleFile
-                            context = '$WAR_CONTEXT'
-                        }
-                    }
+            cargo {
+                deployable {
+                    file = configurations.war.singleFile
+                    context = '$WAR_CONTEXT'
                 }
             }
             
             tasks.withType(LocalCargoContainerTask) {
-                dependsOn configureCargoDeployable
+                dependsOn configurations.war
             }
         """
 

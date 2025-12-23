@@ -30,7 +30,7 @@ class LocallyInstalledContainerIntegrationSpec extends AbstractIntegrationSpec{
             }
 
             dependencies {
-                tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
+                tomcat "org.apache.tomcat:tomcat:10.1.50@zip"
                 war project(path: '${servletWarFixture.projectPath}', configuration: 'archives')
             }
             
@@ -45,7 +45,7 @@ class LocallyInstalledContainerIntegrationSpec extends AbstractIntegrationSpec{
             }
             
             cargo {
-                containerId = "tomcat9x"
+                containerId = "tomcat10x"
                 
                 deployable {
                     file = configurations.war
@@ -57,7 +57,9 @@ class LocallyInstalledContainerIntegrationSpec extends AbstractIntegrationSpec{
                 }
             }
             
-            cargoStartLocal.dependsOn installTomcat
+            afterEvaluate {
+                cargoStartLocal.dependsOn installTomcat
+            }
         """
 
         when:
