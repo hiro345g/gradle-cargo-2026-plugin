@@ -24,8 +24,8 @@ repositories {
 dependencies {
     def cargoVersion = '1.10.0'
     implementation "org.codehaus.cargo:cargo-daemon-client:$cargoVersion"
+    implementation "org.codehaus.cargo:cargo-ant:$cargoVersion"
     testImplementation('org.spockframework:spock-core:2.4-groovy-4.0')
-    testImplementation "org.codehaus.cargo:cargo-ant:$cargoVersion"
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.8.2'
