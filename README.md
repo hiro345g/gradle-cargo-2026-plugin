@@ -1,26 +1,15 @@
-# Gradle Cargo plugin
+# Gradle Cargo 2026 plugin
 
 <table border=1>
     <tr>
         <td>
             <b>Note on Authorship and Maintenance</b><br>
-            This repository is a personal update by <a href="https://github.com/hiro345g">hiro345g</a>, not the original author of the Gradle Cargo Plugin. It reflects personal efforts to update and maintain the plugin for newer Gradle versions and dependencies.
+            This repository is a personal update by <a href="https://github.com/hiro345g">hiro345g</a>, not the original author of the <a href="https://github.com/bmuschko/gradle-cargo-plugin/">Gradle Cargo Plugin</a>. It reflects personal efforts to update and maintain the plugin for newer Gradle versions and dependencies.
         </td>
     </tr>
 </table>
 
 ![Cargo Logo](https://codehaus-cargo.github.io/cargo/attachments/cargo-banner-left.png)
-
-<table border=1>
-    <tr>
-        <td>
-            I am 
-            <a href="https://discuss.gradle.org/t/looking-for-new-owners-for-gradle-plugins/9735">actively looking for contributors</a> 
-            willing to take on maintenance and implementation of the project. If you are interested and would love to see this 
-            plugin continue to thrive, shoot me a <a href="mailto:benjamin.muschko@gmail.com">mail</a>.
-        </td>
-    </tr>
-</table>
 
 <table border=1>
     <tr>
@@ -62,7 +51,7 @@ shows an example on how to retrieve it with the `buildscript` syntax:
         }
 
         dependencies {
-            classpath 'com.bmuschko:gradle-cargo-plugin:2.9.0'
+            classpath 'io.github.hiro345g:gradle-cargo-2026-plugin:1.0.0'
         }
     }
 
@@ -78,34 +67,34 @@ The JAR file comes with two plugins:
         <th>Description</th>
     </tr>
     <tr>
-        <td>com.bmuschko.cargo-base</td>
+        <td>io.github.hiro345g.cargo-2026-base</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/CargoBasePlugin.html">CargoBasePlugin</a></td>
+        <td><a href="http://hiro345g.github.io/gradle-cargo-2026-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/CargoBasePlugin.html">CargoBasePlugin</a></td>
         <td>Provides Cargo custom task types, pre-configures classpath and deployables.</td>
     </tr>
     <tr>
-        <td>com.bmuschko.cargo</td>
-        <td>com.bmuschko.cargo-base</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/CargoPlugin.html">CargoPlugin</a></td>
+        <td>io.github.hiro345g.cargo-2026</td>
+        <td>io.github.hiro345g.cargo-2026-base</td>
+        <td><a href="http://hiro345g.github.io/gradle-cargo-2026-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/CargoPlugin.html">CargoPlugin</a></td>
         <td>Provides a set of local and remote Cargo tasks and exposes extension for configuration.</td>
     </tr>
 </table>
 
-The `com.bmuschko.cargo` plugin helps you get started quickly. If you only need to deal with a single container product, this is the
+The `io.github.hiro345g.cargo-2026` plugin helps you get started quickly. If you only need to deal with a single container product, this is the
 preferrable option. Most plugin users will go with this option. To use the Cargo plugin, include the following code snippet
 in your build script:
 
-    apply plugin: 'com.bmuschko.cargo'
+    apply plugin: 'io.github.hiro345g.cargo-2026'
 
-If you need full control over your deployment tasks, you will want to use the `com.bmuschko.cargo-base` plugin. The downside is that each task
+If you need full control over your deployment tasks, you will want to use the `io.github.hiro345g.cargo-2026-base` plugin. The downside is that each task
 has to be configured individually in your build script. To use the Cargo base plugin, include the following code snippet
 in your build script:
 
-    apply plugin: 'com.bmuschko.cargo-base'
+    apply plugin: 'io.github.hiro345g.cargo-2026-base'
 
 ### Configuring the Cargo version
 
-The `com.bmuschko.cargo-base` plugin already sets up the dependencies for Cargo. In order to do so, it chooses a default
+The `io.github.hiro345g.cargo-2026-base` plugin already sets up the dependencies for Cargo. In order to do so, it chooses a default
 version of the libraries. Alternatively, you can define a custom version of the Cargo libraries. To do so, please use
 the `cargo` configuration name in your `dependencies` closure, and keep the below in mind:
 * Remote deployment functionality will only work with a Cargo version >= 1.1.0 due to a bug in the library (see [CARGO-962](https://codehaus-cargo.atlassian.net/browse/CARGO-962) for more information).
@@ -135,49 +124,49 @@ The `cargo` plugin pre-defines the following tasks out-of-the-box:
     <tr>
         <td>cargoDeployRemote</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/remote/CargoDeployRemote.html">CargoDeployRemote</a></td>
+        <td><a href="http://hiro345g.github.io/gradle-cargo-2026-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/remote/CargoDeployRemote.html">CargoDeployRemote</a></td>
         <td>Deploys a deployable to remote container.</td>
     </tr>
     <tr>
         <td>cargoUndeployRemote</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/remote/CargoUndeployRemote.html">CargoUndeployRemote</a></td>
+        <td><a href="http://hiro345g.github.io/gradle-cargo-2026-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/remote/CargoUndeployRemote.html">CargoUndeployRemote</a></td>
         <td>Undeploys a deployable from remote container.</td>
     </tr>
     <tr>
         <td>cargoRedeployRemote</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/remote/CargoRedeployRemote.html">CargoRedeployRemote</a></td>
+        <td><a href="http://hiro345g.github.io/gradle-cargo-2026-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/remote/CargoRedeployRemote.html">CargoRedeployRemote</a></td>
         <td>Redeploys a deployable to remote container.</td>
     </tr>
     <tr>
         <td>cargoRunLocal</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoRunLocal.html">CargoRunLocal</a></td>
+        <td><a href="http://hiro345g.github.io/gradle-cargo-2026-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoRunLocal.html">CargoRunLocal</a></td>
         <td>Starts the local container, deploys a deployable and waits for the user to press CTRL + C to stop.</td>
     </tr>
     <tr>
         <td>cargoStartLocal</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoStartLocal.html">CargoStartLocal</a></td>
+        <td><a href="http://hiro345g.github.io/gradle-cargo-2026-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoStartLocal.html">CargoStartLocal</a></td>
         <td>Starts the local container, deploys a deployable and then do other tasks (for example, execute tests).</td>
     </tr>
     <tr>
         <td>cargoRedeployLocal</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoRedeployLocal.html">CargoRedeployLocal</a></td>
+        <td><a href="http://hiro345g.github.io/gradle-cargo-2026-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoRedeployLocal.html">CargoRedeployLocal</a></td>
         <td>Redeploys a deployable on local container.</td>
     </tr>
     <tr>
         <td>cargoStopLocal</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoStopLocal.html">CargoStopLocal</a></td>
+        <td><a href="http://hiro345g.github.io/gradle-cargo-2026-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoStopLocal.html">CargoStopLocal</a></td>
         <td>Stops local container.</td>
     </tr>
     <tr>
         <td>cargoConfigureLocal</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoConfigureLocal.html">CargoConfigureLocal</a></td>
+        <td><a href="http://hiro345g.github.io/gradle-cargo-2026-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoConfigureLocal.html">CargoConfigureLocal</a></td>
         <td>Configures the local container.</td>
     </tr>
 </table>
@@ -335,7 +324,7 @@ code snippet:
 
     gradle.projectsEvaluated {
         configure(webProjects()) {
-            apply plugin: 'com.bmuschko.cargo'
+            apply plugin: 'io.github.hiro345g.cargo-2026'
 
             cargo {
                 containerId = 'tomcat11x'
@@ -435,7 +424,7 @@ Absolutely. The Cargo base plugin provides all tasks needed to set up deployment
 or more tasks and configure the mandatory properties. The following example shows how to set up local container tasks
 for Tomcat and Jetty:
 
-    apply plugin: 'com.bmuschko.cargo-base'
+    apply plugin: 'io.github.hiro345g.cargo-2026-base'
 
     task myTomcatRun(type: com.bmuschko.gradle.cargo.tasks.local.CargoRunLocal) {
         containerId = 'tomcat10x'
@@ -468,7 +457,7 @@ also add another task that triggers the deployment to all remote containers.
                             new RemoteContainer(name: 'tomcat3', hostname: 'remote-tomcat3',
                                                 port: 8888, username: 'su', password: 'powerful')]
 
-    apply plugin: 'com.bmuschko.cargo-base'
+    apply plugin: 'io.github.hiro345g.cargo-2026-base'
 
     remoteContainers.each { config ->
         task "deployRemote${config.name.capitalize()}"(type: com.bmuschko.gradle.cargo.tasks.remote.CargoDeployRemote) {
@@ -494,7 +483,7 @@ refer to the Cargo online documentation for setting up the Cargo daemon JVM proc
 this plugin, you can use custom tasks to start and stop a container. The following example stops, starts and then redeploys
 an artifact.
 
-    apply plugin: 'com.bmuschko.cargo'
+    apply plugin: 'io.github.hiro345g.cargo-2026'
 
     cargo {
         ...
@@ -512,4 +501,3 @@ an artifact.
 
     cargoDaemonStart.mustRunAfter cargoDaemonStop
     cargoRedeployRemote.dependsOn cargoDaemonStop, cargoDaemonStart
-
