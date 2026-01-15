@@ -1,6 +1,6 @@
 # Development Guide
 
-This document provides essential instructions for developers and committers of the `gradle-cargo-plugin`. It focuses on building the project, running the test suite, and debugging issues using logs.
+This document provides essential instructions for developers and committers of the `gradle-cargo-2026-plugin`. It focuses on building the project, running the test suite, and debugging issues using logs.
 
 ## Building and Running the Gradle Project
 
@@ -118,29 +118,30 @@ During the upgrade from Gradle 6 to 9, running the full integration test suite w
 
 For this reason, the `src/test/test.sh` script was created to run individual tests in sequence. This script can be used for troubleshooting when the full `./gradlew integrationTest` suite does not pass.
 
-- **How to Run:**
-  ```bash
-  JAVA_HOME=${HOME}/.sdkman/candidates/java/17.0.17-tem bash src/test/test.sh
-  ```
+**How to Run:**
+
+```bash
+JAVA_HOME=${HOME}/.sdkman/candidates/java/17.0.17-tem bash src/test/test.sh
+```
 
 ## Verifying Changes with a Local Project
 
 Before committing changes, you may want to verify them in a separate, local test project. The recommended way to do this is with a **Composite Build**.
 
-1.  In your local test project's `settings.gradle`, add an `includeBuild` directive pointing to your clone of `gradle-cargo-plugin`.
-2.  In the `build.gradle` of the test project, apply the plugin by its ID. No version is required.
+1. In your local test project's `settings.gradle`, add an `includeBuild` directive pointing to your clone of `gradle-cargo-2026-plugin`.
+2. In the `build.gradle` of the test project, apply the plugin by its ID. No version is required.
 
 `local-test-project/settings.gradle`:
 
 ```groovy
-includeBuild '../path/to/your/gradle-cargo-plugin'
+includeBuild '../path/to/your/gradle-cargo-2026-plugin'
 ```
 
 `local-test-project/build.gradle`:
 
 ```groovy
 plugins {
-    id 'com.bmuschko.cargo'
+    id 'io.github.hiro345g.cargo-2026'
 }
 ```
 
