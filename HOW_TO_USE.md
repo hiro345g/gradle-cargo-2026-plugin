@@ -27,7 +27,19 @@ sdk env
 
 The following examples demonstrate a project for a WAR application (`webapp001`) under the group `internal.dev.app001`. This setup assumes the use of Gradle Wrapper and Version Catalogs (`libs.versions.toml`).
 
-### build.gradle
+```text
+webapp001/
+├── build.gradle
+├── gradle/
+│   ├── libs.versions.toml
+│   └── wrapper/
+├── gradlew
+├── gradlew.bat
+├── settings.gradle
+└── src/
+```
+
+`build.gradle`
 
 ```gradle
 plugins {
@@ -122,7 +134,7 @@ tasks.register('stop-debug', com.bmuschko.gradle.cargo.tasks.local.CargoStopLoca
 }
 ```
 
-### settings.gradle
+`settings.gradle`
 
 ```gradle
 pluginManagement {
@@ -136,7 +148,7 @@ pluginManagement {
 rootProject.name = 'webapp001'
 ```
 
-### gradle/libs.versions.toml
+`gradle/libs.versions.toml`
 
 ```toml
 [versions]
