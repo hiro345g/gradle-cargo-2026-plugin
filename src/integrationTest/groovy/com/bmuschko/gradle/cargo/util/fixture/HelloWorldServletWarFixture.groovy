@@ -13,9 +13,9 @@ class HelloWorldServletWarFixture extends AbstractWarFixture {
 
     String getServletClassSource() {
         """
-            import javax.servlet.http.HttpServlet;
-            import javax.servlet.http.HttpServletRequest;
-            import javax.servlet.http.HttpServletResponse;
+            import jakarta.servlet.http.HttpServlet;
+            import jakarta.servlet.http.HttpServletRequest;
+            import jakarta.servlet.http.HttpServletResponse;
             import java.io.IOException;
             
             public class $servletClassName extends HttpServlet {

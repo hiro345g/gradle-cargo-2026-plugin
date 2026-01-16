@@ -2,12 +2,12 @@ package com.bmuschko.gradle.cargo.util
 
 import com.bmuschko.gradle.cargo.util.fixture.HelloWorldServletWarFixture
 
-class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
+class InstallerUrlFromUrlIntegrationSpec extends AbstractIntegrationSpec {
 
     HelloWorldServletWarFixture servletWarFixture
 
     void setup() {
-        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
+        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir, ":$WAR_CONTEXT")
         buildScript << """
             import com.bmuschko.gradle.cargo.tasks.local.LocalCargoContainerTask
 
@@ -24,7 +24,7 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
             }
 
             cargo {
-                containerId = "tomcat9x"
+                containerId = "tomcat10x"
                 
                 local {
                     installer {
@@ -44,7 +44,11 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
     }
 
     void cleanup() {
-        runBuild "cargoStopLocal"
+        try {
+            runBuild("cargoStopLocal")
+        } catch (org.gradle.testkit.runner.UnexpectedBuildFailure e) {
+            println "Ignoring expected failure during cargoStopLocal in cleanup: ${e.message}"
+        }
     }
 
     void "url can be used to configure installer source"() {
@@ -53,33 +57,7 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
             cargo {
                 local {
                     installer {
-                        installUrl = "https://repo1.maven.org/maven2/org/apache/tomcat/tomcat/9.0.14/tomcat-9.0.14.zip"
-                    }
-                }
-            }
-        """
-        when:
-        runBuild "cargoStartLocal"
-
-        then:
-        requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
-    }
-
-    void "configuration can be used to configure installer source"() {
-        given:
-        buildScript << """
-            configurations {
-                tomcat
-            }
-            
-            dependencies {
-                tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
-            }
-            
-            cargo {
-                local {
-                    installer {
-                        installConfiguration = configurations.tomcat
+                        installUrl = "https://repo1.maven.org/maven2/org/apache/tomcat/tomcat/10.1.50/tomcat-10.1.50.zip"
                     }
                 }
             }

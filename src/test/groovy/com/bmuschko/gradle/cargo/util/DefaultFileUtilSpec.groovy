@@ -15,23 +15,22 @@
  */
 package com.bmuschko.gradle.cargo.util
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
+import spock.lang.TempDir
 import spock.lang.Unroll
 
 /**
  * Filename utilities unit tests.
  */
 class DefaultFileUtilSpec extends Specification {
-    @Rule
-    TemporaryFolder temporaryFolder = new TemporaryFolder()
+    @TempDir
+    File temporaryFolder
 
     FileUtil fileUtil = new DefaultFileUtil()
 
     def "throws exception for non-existent file"() {
         when:
-        fileUtil.getExtension(new File('unknownfile'))
+        fileUtil.getExtension(new File(temporaryFolder, 'unknownfile'))
 
         then:
         thrown(IllegalArgumentException)
@@ -39,8 +38,12 @@ class DefaultFileUtilSpec extends Specification {
 
     @Unroll
     def "get file extension for file with name '#filename'"() {
+        given:
+        def file = new File(temporaryFolder, filename)
+        file.createNewFile()
+
         when:
-        String extension = fileUtil.getExtension(temporaryFolder.newFile(filename))
+        String extension = fileUtil.getExtension(file)
 
         then:
         extension == expectedExtension
@@ -53,8 +56,12 @@ class DefaultFileUtilSpec extends Specification {
 
     @Unroll
     def "get file extension for directory with name '#dirname'"() {
+        given:
+        def dir = new File(temporaryFolder, dirname)
+        dir.mkdir()
+
         when:
-        String extension = fileUtil.getExtension(temporaryFolder.newFolder(dirname))
+        String extension = fileUtil.getExtension(dir)
 
         then:
         extension == expectedExtension

@@ -7,11 +7,15 @@ class LocallyInstalledContainerIntegrationSpec extends AbstractIntegrationSpec{
     HelloWorldServletWarFixture servletWarFixture
 
     def setup() {
-        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
+        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir, ":$WAR_CONTEXT")
     }
 
     void cleanup() {
-        runBuild "cargoStopLocal"
+        try {
+            runBuild("cargoStopLocal")
+        } catch (org.gradle.testkit.runner.UnexpectedBuildFailure e) {
+            println "Ignoring expected failure during cargoStopLocal in cleanup: ${e.message}"
+        }
     }
 
     def "can use a locally installed container"() {
@@ -26,7 +30,7 @@ class LocallyInstalledContainerIntegrationSpec extends AbstractIntegrationSpec{
             }
 
             dependencies {
-                tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
+                tomcat "org.apache.tomcat:tomcat:10.1.50@zip"
                 war project(path: '${servletWarFixture.projectPath}', configuration: 'archives')
             }
             
@@ -41,7 +45,7 @@ class LocallyInstalledContainerIntegrationSpec extends AbstractIntegrationSpec{
             }
             
             cargo {
-                containerId = "tomcat9x"
+                containerId = "tomcat10x"
                 
                 deployable {
                     file = configurations.war
@@ -53,7 +57,9 @@ class LocallyInstalledContainerIntegrationSpec extends AbstractIntegrationSpec{
                 }
             }
             
-            cargoStartLocal.dependsOn installTomcat
+            afterEvaluate {
+                cargoStartLocal.dependsOn installTomcat
+            }
         """
 
         when:

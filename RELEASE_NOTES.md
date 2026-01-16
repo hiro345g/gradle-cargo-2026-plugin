@@ -1,7 +1,27 @@
+## Special Version Designations for Development Branches
+
+The following versions (`2.12.0`, `2.11.0`, `2.10.0`) are not official releases on the Gradle Plugin Portal or Maven Central. They are used internally to designate development progress on specific branches, primarily reflecting compatibility with newer Gradle versions.
+
+### Version 2.12.0 (for `gradle9` branch)
+
+* This version number is designated for the `gradle9` branch, which focuses on compatibility and updates for Gradle 9.x. This branch includes updates for the Java 17 minimum requirement and Jakarta EE 9 dependencies.
+
+### Version 2.11.0 (for `gradle8` branch)
+
+* This version number is designated for the `gradle8` branch, which focuses on compatibility and updates for Gradle 8.x.This branch includes updates for the Java 11 minimum requirement.
+
+### Version 2.10.0 (for `gradle7` branch)
+
+* This version number is designated for the `gradle7` branch, which focuses on compatibility and updates for Gradle 7.x.
+
+----
+
+## official releases
+
 ### Version 2.9.0 (February 19, 2022)
 
 * Upgrade to Codehaus Cargo 1.9.10 - [Pull request 205](https://github.com/bmuschko/gradle-cargo-plugin/pull/205).
-* 
+
 ### Version 2.8.0 (December 17, 2020)
 
 * Version upgrades for Codehaus Cargo and Java - [Pull request 204](https://github.com/bmuschko/gradle-cargo-plugin/pull/204).

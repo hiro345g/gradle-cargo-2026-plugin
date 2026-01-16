@@ -16,6 +16,14 @@ class TextResourceFactoryJarFixture extends ProjectFixture {
     private void writeBuild() {
         new File(projectDir, "build.gradle") << """
             apply plugin: 'java'
+            
+            repositories {
+                mavenCentral()
+            }
+
+            dependencies {
+                compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+            }
         """
     }
 
