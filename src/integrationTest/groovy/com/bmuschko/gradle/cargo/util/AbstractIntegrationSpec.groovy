@@ -21,7 +21,7 @@ abstract class AbstractIntegrationSpec extends Specification {
         buildScript = new File(testProjectDir, 'build.gradle')
         buildScript << """
             plugins {
-                id 'com.bmuschko.cargo'
+                id 'io.github.hiro345g.cargo-2026'
             }
         """
         def serverXml = new File(testProjectDir, 'server.xml')

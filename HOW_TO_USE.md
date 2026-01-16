@@ -1,145 +1,168 @@
-# How to Use the Unofficial `gradle-cargo-plugin`
+# Usage Guide for gradle-cargo-2026-plugin
 
-This document provides a comprehensive guide on how to integrate the unofficial `gradle-cargo-plugin` from [https://github.com/hiro345g/gradle-cargo-plugin](https://github.com/hiro345g/gradle-cargo-plugin) into your Gradle project.
+Note: This plugin has not yet been published to public Maven repositories (e.g., Maven Central). Please install it to your local Maven repository before use.
 
-Since this is not an official release published to the Gradle Plugin Portal, you need to use one of the following methods. Please choose the one that best fits your project's requirements for build reproducibility and security policies.
+## 1. Clone and Install the Plugin Locally
 
-## Choosing the Right Method
+Open your terminal and follow the steps below.
 
-| Method                          | Recommended Scenario                                                                                                 | Pros                                                                | Cons                                                                                   |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| **1. Private Maven Repository** | **Organizational use.** For teams that need stable, reproducible builds and cannot rely on external services.        | High reproducibility and security. Central management of artifacts. | Requires setup of a private repository (e.g., Artifactory, Nexus).                     |
-| **2. Local JAR File**           | **Simple or offline projects.** When you want to use a fixed version of the plugin without complex repository setup. | High reproducibility once set up. Works offline.                    | Manual process to distribute the JAR file across a team.                               |
-| **3. JitPack**                  | **Quick tests or individual use.** When you need an easy way to test a specific branch or commit.                    | Very easy to set up for a single developer.                         | May not be allowed by organizational security policies. Relies on an external service. |
-| **4. Composite Builds**         | **Plugin development.** For developers who are actively contributing to or debugging the plugin itself.              | Instant feedback on code changes; best IDE integration.             | Not suitable for general use; requires a local clone of the plugin repository.         |
+This fork supports Gradle 9. We will clone the repository into the `build-cargo-plugin/gradle-cargo-2026-plugin` directory, switch to the `gradle-cargo-2026` branch, and publish it to your local Maven repository.
 
----
+```bash
+# Clone the plugin repository
+git clone https://github.com/hiro345g/gradle-cargo-2026-plugin.git build-cargo-plugin/gradle-cargo-2026-plugin
 
-## Method 1: Using a Private Maven Repository (Recommended for Organizational Use)
+# Switch to the specific branch
+cd build-cargo-plugin/gradle-cargo-2026-plugin && git switch gradle-cargo-2026
 
-This is the most robust and secure method for teams, ensuring that builds are reproducible and do not depend on external services.
+# Ensure you are using Java 17. You can check or set it using the `sdk` command.
+sdk env
 
-### 1.1. For the person publishing the plugin:
+# Publish to your local Maven repository (~/.m2/repository)
+./gradlew publishToMavenLocal
 
-You first need to publish the plugin artifact to your organization's private Maven repository (e.g., Artifactory, Nexus).
+```
 
-1.  **Clone the `gradle-cargo-plugin` repository** and check out the desired version (a specific branch, tag, or commit).
-2.  **Configure publishing settings.** Add the `maven-publish` plugin to `build.gradle` and configure it with your repository's URL and credentials.
-    ```groovy
-    // build.gradle
-    publishing {
-        repositories {
-            maven {
-                url = "https://your.company.repo/maven-releases"
-                credentials {
-                    username = "your-username"
-                    password = "your-password"
-                }
-            }
-        }
+## 2. Configuration Examples (build.gradle, settings.gradle, libs.versions.toml)
+
+The following examples demonstrate a project for a WAR application (`webapp001`) under the group `internal.dev.app001`. This setup assumes the use of Gradle Wrapper and Version Catalogs (`libs.versions.toml`).
+
+```text
+webapp001/
+├── build.gradle
+├── gradle/
+│   ├── libs.versions.toml
+│   └── wrapper/
+├── gradlew
+├── gradlew.bat
+├── settings.gradle
+└── src/
+```
+
+`build.gradle`
+
+```gradle
+plugins {
+    alias(libs.plugins.cargo)
+    id 'war'
+    id 'eclipse-wtp'
+}
+
+repositories {
+    mavenLocal() // Required to find the locally published plugin
+    mavenCentral()
+}
+
+configurations {
+    tomcat
+}
+
+dependencies {
+    // Servlet API & Testing
+    providedCompile libs.jakarta.servlet.api
+    testImplementation libs.junit.junit
+
+    // Define Tomcat distribution for the container
+    tomcat libs.tomcat.get().toString() + '@zip'
+}
+
+group = 'internal.dev.app001'
+version = '1.0-SNAPSHOT'
+description = 'webapp001'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
     }
-    ```
-3.  **Publish the artifact** by running the following command in the plugin's project directory:
-    ```bash
-    ./gradlew publish
-    ```
+}
 
-### 1.2. For the plugin consumer:
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
-1.  **Edit `settings.gradle`** to add your private Maven repository.
-    ```groovy
-    // settings.gradle
-    pluginManagement {
-        repositories {
-            maven { url "https://your.company.repo/maven-releases" }
-            gradlePluginPortal()
-            mavenCentral()
-        }
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}
+
+war {
+    webAppDirectory = file('src/main/webapp')
+}
+
+// Task to extract Tomcat for local execution
+task installTomcat(type: Copy) {
+    from { zipTree(configurations.tomcat.singleFile) }
+    into "$buildDir/tomcat-home"
+    eachFile { FileCopyDetails fileCopyDetails ->
+        def original = fileCopyDetails.relativePath
+        // Strip the top-level directory from the zip
+        fileCopyDetails.relativePath = new RelativePath(original.file, *original.segments[1..-1])
     }
-    ```
-2.  **Edit `build.gradle`** to apply the plugin with the version you published.
-    ```groovy
-    // build.gradle
-    plugins {
-        id 'com.bmuschko.cargo' version '2.12.0' // Use the version you published
+}
+
+cargo {
+    containerId = 'tomcat10x'
+    port = 8080
+
+    deployable {
+        context = 'ROOT'
     }
-    ```
 
----
-
-## Method 2: Using a Local Plugin JAR
-
-This method is suitable for simple projects or for teams where distributing a JAR file manually is feasible. It ensures high build reproducibility as the artifact is stored locally.
-
-1.  **Prepare the JAR File**: Generate the JAR from the plugin project with `./gradlew assemble`.
-2.  **Place the JAR**: Create a directory in your project (e.g., `local_plugins`) and copy the JAR file into it.
-3.  **Configure `settings.gradle`**: Add a `flatDir` repository pointing to your local directory.
-    ```groovy
-    // settings.gradle
-    pluginManagement {
-        repositories {
-            flatDir { dirs 'local_plugins' }
-            gradlePluginPortal()
-            mavenCentral()
-        }
+    local {
+        homeDir = installTomcat.outputs.files.singleFile
     }
-    ```
-4.  **Apply the Plugin in `build.gradle`**:
-    ```groovy
-    // build.gradle
-    plugins {
-        id 'com.bmuschko.cargo' version '{plugin_version}' // Use the exact version of the JAR
+}
+
+afterEvaluate {
+    cargoStartLocal.dependsOn installTomcat
+}
+
+// Custom Task Registration
+tasks.register('start', com.bmuschko.gradle.cargo.tasks.local.CargoStartLocal) {
+    dependsOn installTomcat
+}
+
+tasks.register('stop', com.bmuschko.gradle.cargo.tasks.local.CargoStopLocal)
+
+tasks.register('start-debug', com.bmuschko.gradle.cargo.tasks.local.CargoStartLocal) {
+    dependsOn installTomcat
+    jvmArgs = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'
+    rmiPort = 8206
+}
+
+tasks.register('stop-debug', com.bmuschko.gradle.cargo.tasks.local.CargoStopLocal) {
+    rmiPort = 8206
+}
+```
+
+`settings.gradle`
+
+```gradle
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        mavenLocal() // Look for the plugin in the local repository
     }
-    ```
+}
 
----
+rootProject.name = 'webapp001'
+```
 
-## Method 3: Using JitPack (For Quick Tests and Individual Use)
+`gradle/libs.versions.toml`
 
-This method is convenient but may not be suitable for all environments. **If your organization has strict security policies regarding external build services, please use Method 1 or 2.**
+```toml
+[versions]
+junit-junit = "4.13.1"
+cargo = "1.0.0"
+jakarta-servlet-api = "6.0.0"
+tomcat = "10.1.20"
 
-For reproducible builds, it is highly recommended to use a **specific commit hash** as the version instead of a branch name (`-SNAPSHOT`).
+[libraries]
+junit-junit = { module = "junit:junit", version.ref = "junit-junit" }
+jakarta-servlet-api = { module = "jakarta.servlet:jakarta.servlet-api", version.ref = "jakarta-servlet-api" }
+tomcat = { module = "org.apache.tomcat:tomcat", version.ref = "tomcat" }
 
-1.  **Edit `settings.gradle`**: Add the JitPack repository.
-    ```groovy
-    // settings.gradle
-    pluginManagement {
-        repositories {
-            maven { url 'https://jitpack.io' }
-            gradlePluginPortal()
-            mavenCentral()
-        }
-    }
-    ```
-2.  **Edit `build.gradle`**: Apply the plugin, preferably using a commit hash for the version.
+[plugins]
+cargo = { id = "io.github.hiro345g.cargo-2026", version.ref = "cargo" }
 
-    ```groovy
-    // build.gradle
-    plugins {
-        // Recommended: Use a specific commit hash for reproducible builds
-        id 'com.github.hiro345g.gradle-cargo-plugin.com.bmuschko.cargo' version 'a1b2c3d4e5'
-
-        // For temporary testing, you can use a branch name
-        // id 'com.github.hiro345g.gradle-cargo-plugin.com.bmuschko.cargo' version 'gradle9-SNAPSHOT'
-    }
-    ```
-
----
-
-## Method 4: Using Composite Builds (For Plugin Development)
-
-This method is intended only for those who are actively developing or debugging the plugin itself. It links the plugin's source code directly to your build.
-
-1.  **Clone the plugin repository** locally.
-2.  **Edit `settings.gradle`**: In your test project, use `includeBuild` to point to your local clone.
-    ```groovy
-    // settings.gradle
-    includeBuild '../path/to/your/gradle-cargo-plugin'
-    ```
-3.  **Edit `build.gradle`**: Apply the plugin by ID, without a version.
-    ```groovy
-    // build.gradle
-    plugins {
-        id 'com.bmuschko.cargo'
-    }
-    ```
+```

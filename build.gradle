@@ -14,8 +14,8 @@ java {
     withSourcesJar()
     withJavadocJar()
 }
-group = 'com.bmuschko'
-version = '2.12.0'
+group = 'io.github.hiro345g'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -38,21 +38,21 @@ task groovydocJar(type: Jar) {
 }
 
 gradlePlugin {
-    website = "https://github.com/bmuschko/gradle-cargo-plugin"
-    vcsUrl = "https://github.com/bmuschko/gradle-cargo-plugin"
+    website = "https://github.com/hiro345g/gradle-cargo-2026-plugin"
+    vcsUrl = "https://github.com/hiro345g/gradle-cargo-2026-plugin"
 
     plugins {
         cargoBasePlugin {
-            id = 'com.bmuschko.cargo-base'
+            id = 'io.github.hiro345g.cargo-2026-base'
             implementationClass = 'com.bmuschko.gradle.cargo.CargoBasePlugin'
-            displayName = 'Gradle Cargo Base Plugin'
+            displayName = 'Gradle Cargo 2026 Base Plugin'
             description = 'Plugin that provides Cargo custom task types, pre-configures classpath and deployables.'
             tags.set(['deployment', 'container', 'base', 'cargo'])
         }
         cargoPlugin {
-            id = 'com.bmuschko.cargo'
+            id = 'io.github.hiro345g.cargo-2026'
             implementationClass = 'com.bmuschko.gradle.cargo.CargoPlugin'
-            displayName = 'Gradle Cargo Plugin'
+            displayName = 'Gradle Cargo 2026 Plugin'
             description = 'Plugin that provides a set of local and remote Cargo tasks and exposes extension for configuration.'
             tags.set(['deployment', 'container', 'web', 'ear', 'cargo'])
         }
@@ -62,11 +62,22 @@ gradlePlugin {
 publishing {
     publications.withType(MavenPublication) {
         artifact groovydocJar
+        pom {
+            name = 'Gradle Cargo 2026 Plugin'
+            description = 'Fork of the original gradle-cargo-plugin updated for 2026.'
+            url = 'https://github.com/hiro345g/gradle-cargo-2026-plugin'
+            licenses {
+                license {
+                    name = 'The Apache Software License, Version 2.0'
+                    url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                }
+            }
+        }
     }
 }
 
 gitPublish {
-    repoUri = 'git@github.com:bmuschko/gradle-cargo-plugin.git'
+    repoUri = 'git@github.com:hiro345g/gradle-cargo-2026-plugin.git'
     branch = 'gh-pages'
 
     contents {

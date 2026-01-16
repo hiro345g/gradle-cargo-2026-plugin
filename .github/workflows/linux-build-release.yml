@@ -32,5 +32,5 @@ jobs:
       - name: Store artifact
         uses: actions/upload-artifact@v4
         with:
-          name: gradle-cargo-plugin.jar
+          name: gradle-cargo-2026-plugin.jar
           path: build/libs/*.jar
