@@ -1,6 +1,6 @@
 # Release Notes - Gradle Cargo 2026 Plugin
 
-## Version 1.0.0 (2026-01-15)
+## Version 1.0.0 (2026-01-16)
 
 * Initial release of the fork.
 * Renamed plugin to `gradle-cargo-2026-plugin`.
