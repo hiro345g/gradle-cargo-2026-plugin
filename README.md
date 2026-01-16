@@ -17,7 +17,7 @@
             <b>Gradle 9 Compatibility</b><br>
             This plugin has been updated to be compatible with Gradle 9. Key changes include:
             <ul>
-                <li>Minimum required Java version is now 11.</li>
+                <li>Minimum required Java version is now 17.</li>
                 <li>Dependencies have been updated to support Jakarta EE 9 (e.g., `jakarta.servlet-api` instead of `javax.servlet-api`).</li>
                 <li>The plugin now correctly works with modern Gradle versions, resolving issues with task configuration and container lifecycle in tests.</li>
             </ul>
